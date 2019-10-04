@@ -9,14 +9,14 @@ package org.iuea.oop;
 
 import org.iuea.oop.views.LoginPage;
 
-public class AppMain {
+public class Main {
     
     public static void main(String[] args){
             
         LoginPage win = new LoginPage();
         
     }
-    AppMain(){
+    Main(){
         
     }
 }
