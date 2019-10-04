@@ -24,6 +24,7 @@ hs_err_pid*
 
 #sensitive stuff
 nbproject/private/
+nbproject/
 
 #others
 manifest.mf
