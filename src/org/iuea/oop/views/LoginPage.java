@@ -8,24 +8,32 @@
 package org.iuea.oop.views;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridBagLayout;
+
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class LoginPage extends JFrame {
     JFrame frame;
-    Dimension d = new Dimension(400, 435);
+    Dimension d = new Dimension(350, 360);
     LoginView viewInfo;
     
     public LoginPage(){
-        frame = new JFrame("IUEA Login");
+        
+    	frame = new JFrame("IUEA Login");
         frame.setSize(d);
-        frame.setLocation(500, 200);
         frame.setMinimumSize(d);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
-        viewInfo = new LoginView();
-        frame.getContentPane().add(viewInfo);
-        viewInfo.setBackground(Color.GRAY);
+        JPanel content = new JPanel(new GridBagLayout());
+        content.setBackground(Color.DARK_GRAY);
+//        content.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 5));
         
+        frame.setContentPane(content);
+        frame.add(new LoginView());
+        frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         
         

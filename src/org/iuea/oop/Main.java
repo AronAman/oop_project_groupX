@@ -7,16 +7,21 @@
 */
 package org.iuea.oop;
 
+import javax.swing.SwingUtilities;
+
 import org.iuea.oop.views.LoginPage;
 
 public class Main {
     
     public static void main(String[] args){
-            
-        LoginPage win = new LoginPage();
-        
-    }
-    Main(){
+        SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				LoginPage win = new LoginPage();
+		        
+			}
+        });
         
     }
 }

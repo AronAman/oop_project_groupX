@@ -23,10 +23,12 @@
 hs_err_pid*
 
 #sensitive stuff
-nbproject/private/
-nbproject/
+/nbproject/
 
 #others
 manifest.mf
 build.xml
 /build/
+/bin/
+.classpath
+.project
