@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -32,9 +33,13 @@ public class LoginView extends JPanel implements ActionListener {
 	private JPasswordField passField;
 	private JButton loginbtn, cancelbtn;
 	Dimension panelSize = new Dimension(320, 300);
+	LoginPage frame1;
     
 	public LoginView() {
-    	
+		
+	}
+	public LoginView(LoginPage frame) {
+    	frame1 =  frame;
 		setLayout(new GridBagLayout());
 //    	setBorder(BorderFactory.createEmptyBorder(10,30,10,30));
     	this.setPreferredSize(panelSize);
@@ -44,6 +49,8 @@ public class LoginView extends JPanel implements ActionListener {
     	userLabel = new JLabel("Username");
     	passLabel = new JLabel("Password");
     	userField = new JTextField(15);
+    	userField.setText("admin");
+    	
     	passField = new JPasswordField(15);
     	loginbtn = new JButton("Login");
     	cancelbtn = new JButton("Cancel");
@@ -104,6 +111,7 @@ public class LoginView extends JPanel implements ActionListener {
     	add(cancelbtn, gbc);
     	
     }
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -113,6 +121,9 @@ public class LoginView extends JPanel implements ActionListener {
 	        String PASSWORD = passField.getText();
 	        if(USER.equalsIgnoreCase("admin") && PASSWORD.equals("admin")){
 	            JOptionPane.showMessageDialog(this, "User logged in succesfully", "Welcome", JOptionPane.PLAIN_MESSAGE);
+	            frame1.frame.setVisible(false);
+	            frame1.adminPage();
+	            
 	        }else {
 	            JOptionPane.showMessageDialog(this, "User name and password does not match what is expected.", "Error", JOptionPane.ERROR_MESSAGE);
 	        }
