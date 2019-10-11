@@ -26,20 +26,17 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 
-public class LoginView extends JPanel implements ActionListener {
+public class LoginView extends JPanel {
 	
 	private JLabel logo, userLabel, passLabel;
 	private JTextField userField;
 	private JPasswordField passField;
-	private JButton loginbtn, cancelbtn;
+	JButton loginbtn, cancelbtn;
 	Dimension panelSize = new Dimension(320, 300);
-	LoginPage frame1;
+	
     
+	
 	public LoginView() {
-		
-	}
-	public LoginView(LoginPage frame) {
-    	frame1 =  frame;
 		setLayout(new GridBagLayout());
 //    	setBorder(BorderFactory.createEmptyBorder(10,30,10,30));
     	this.setPreferredSize(panelSize);
@@ -48,15 +45,13 @@ public class LoginView extends JPanel implements ActionListener {
     	logo = new JLabel("IUEA Login");
     	userLabel = new JLabel("Username");
     	passLabel = new JLabel("Password");
-    	userField = new JTextField(15);
-    	userField.setText("admin");
+    	setUserField(new JTextField(15));
+    	getUserField().setText("admin");
     	
-    	passField = new JPasswordField(15);
+    	setPassField(new JPasswordField(15));
     	loginbtn = new JButton("Login");
     	cancelbtn = new JButton("Cancel");
     	
-    	loginbtn.addActionListener(this);
-    	cancelbtn.addActionListener(this);
     	
     	/////// Customizations //////////////
     	
@@ -73,8 +68,8 @@ public class LoginView extends JPanel implements ActionListener {
     	
     	userLabel.setBorder(innerBorderField);
     	
-    	userField.setBorder(fieldBorder);
-    	passField.setBorder(fieldBorder);
+    	getUserField().setBorder(fieldBorder);
+    	getPassField().setBorder(fieldBorder);
     	
     	loginbtn.setBorder(btnBorder);
     	cancelbtn.setBorder(btnBorder2);
@@ -96,13 +91,13 @@ public class LoginView extends JPanel implements ActionListener {
     	add(userLabel, gbc);
     	
     	gbc.gridy++;
-    	add(userField, gbc);
+    	add(getUserField(), gbc);
 
     	gbc.gridy++;
     	add(passLabel, gbc);
 
     	gbc.gridy++;
-    	add(passField, gbc);
+    	add(getPassField(), gbc);
 
     	gbc.gridy++;
     	add(loginbtn, gbc);
@@ -111,24 +106,31 @@ public class LoginView extends JPanel implements ActionListener {
     	add(cancelbtn, gbc);
     	
     }
+
+
+
+	public JPasswordField getPassField() {
+		return passField;
+	}
+
+
+
+	public void setPassField(JPasswordField passField) {
+		this.passField = passField;
+	}
+
+
+
+	public JTextField getUserField() {
+		return userField;
+	}
+
+
+
+	public void setUserField(JTextField userField) {
+		this.userField = userField;
+	}
 	
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource()==loginbtn) {
-			String USER = userField.getText();
-	        String PASSWORD = passField.getText();
-	        if(USER.equalsIgnoreCase("admin") && PASSWORD.equals("admin")){
-	            JOptionPane.showMessageDialog(this, "User logged in succesfully", "Welcome", JOptionPane.PLAIN_MESSAGE);
-	            frame1.frame.setVisible(false);
-	            frame1.adminPage();
-	            
-	        }else {
-	            JOptionPane.showMessageDialog(this, "User name and password does not match what is expected.", "Error", JOptionPane.ERROR_MESSAGE);
-	        }
-		}else if(e.getSource()==cancelbtn) {
-			System.exit(0);
-		}
-	}
+	
 }
