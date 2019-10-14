@@ -16,6 +16,8 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
@@ -28,26 +30,24 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.Border;
+import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
 
-
-public class LoginPage extends JFrame implements ActionListener{
-    JFrame frame;
-    Dimension d = new Dimension(350, 360);
-    LoginView viewInfo;
-    JFrame window2;
-    JPanel adminContent;
-    
-    
-    JPanel topPanel, sidePanel, centerPanel, footPanel, gridPanel;
+public class LoginPage extends JFrame implements ActionListener,MouseListener {
+	JFrame frame, frame2;
+	JPanel mainContainer,topPanel,sidePanel,gridPanel,bodyPanel,footPanel,formPanel,btnsPanel,tablePanel,stdPanel;
+	Dimension frameSize = new Dimension(350, 360);
+	LoginView lv;
+	
 	JButton stdsbtn, coursebtn, courseUbtn, lecturerbtn;
 	JMenuBar menuBar;
-	
-	//////////////////////////////
 	JMenu actionMenu, helpMenu;
 	JMenuItem logout;
 	JMenuItem addStd;
@@ -56,67 +56,69 @@ public class LoginPage extends JFrame implements ActionListener{
 	
 	JButton addbtn, editbtn, delbtn;
 	//////////////////////////////
-
-	JPanel btnsPanel, tablePanel;
-
+	
 	JLabel fnLabel,lnLabel,sexLabel, dobLabel,courseLabel,regLabel;
 	JTextField fnField, lnField,courseField,regField;
 	JDateChooser dobField;
 	JComboBox sexField;
 	JButton submitbtn, cancelbtn;
 	String[] stdSex = {"Male", "Female"};
+	////////////////////////////////////////////////////////////////////////
+	
+	////////////////////////////////////////////////////////////////////////
+	JTable table;
+	DefaultTableModel dm;
+	Integer a=0;
+	String [][] stdData = new String [10][10];
 	
 	
-    public LoginPage(){
+	public LoginPage(){
+		frame = new JFrame("IUEA Login");
+		frame.setSize(frameSize);
+		frame.setMinimumSize(frameSize);
+		
+		JPanel contentPane = new JPanel(new GridBagLayout());
+		contentPane.setBackground(Color.RED);
+		frame.setContentPane(contentPane);
+		
+		lv = new LoginView();
+		frame.add(lv);
+		lv.loginbtn.addActionListener(this);
+		lv.cancelbtn.addActionListener(this);
+		
+		frame.setLocationRelativeTo(null);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+//		createAdminPage();
+		
+	}
+	
+	void createAdminPage() {
+		frame2 = new JFrame("Admin's Page");
+    	frame2.setSize(700,450);
+        mainContainer = new JPanel(new BorderLayout());
+        createPanels();
         
-    	frame = new JFrame("IUEA Login");
-        frame.setSize(d);
-        frame.setMinimumSize(d);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame2.setContentPane(mainContainer);
         
-        JPanel content = new JPanel(new GridBagLayout());
-        content.setBackground(Color.DARK_GRAY);
-//        content.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 5));
-        viewInfo = new LoginView();
-        viewInfo.loginbtn.addActionListener(this);
-        viewInfo.cancelbtn.addActionListener(this);
-        
-        
-        content.add(viewInfo);
-        frame.setContentPane(content);
-        
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    	
-    }
-    void createAdminPage() {
-
-    	window2 = new JFrame("Admin's Page");
-    	window2.setSize(700,450);
-        window2.setLocationRelativeTo(null);
-        
-        adminContent = new JPanel(new BorderLayout());
-        adminContent.setBackground(Color.RED);
-        createAdminPanel();
-        
-        adminContent.validate();
-        window2.setContentPane(adminContent);
-//        window2.getRootPane().setBorder(BorderFactory.createMatteBorder(4, 4, 4, 4, Color.GREEN));
-        window2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        window2.setVisible(true);
-    }
-
-    void createAdminPanel() {
-    	
-    	Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
+        frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame2.setLocationRelativeTo(null);
+        frame2.setVisible(true);
+	}
+	
+	void createPanels() {
+		Border lineBorder = BorderFactory.createLineBorder(Color.BLACK, 1);
 
 		Border inner = BorderFactory.createEmptyBorder(15, 12, 15, 12);
 		Border outer = BorderFactory.createMatteBorder(0, 0, 2, 0, Color.BLACK);
 		Border btnBorder = BorderFactory.createCompoundBorder(outer, inner);
-		Border inner2 = BorderFactory.createEmptyBorder(4, 20, 4, 20);
+		Border inner2 = BorderFactory.createEmptyBorder(4, 25, 4, 25);
 		Border outer2 = BorderFactory.createMatteBorder(0, 0, 0, 1, Color.BLACK);
+		
 		Border menuBorder = BorderFactory.createCompoundBorder(outer2, inner2);
+		
+		Border btnInner = BorderFactory.createEmptyBorder(10, 12, 10, 12);
+		Border btnOuter = BorderFactory.createLineBorder(Color.BLACK, 0, true);
 		
 		topPanel = new JPanel();
 		topPanel.setBorder(lineBorder);
@@ -145,7 +147,6 @@ public class LoginPage extends JFrame implements ActionListener{
 		menuBar.add(helpMenu);
 		
 		topPanel.add(menuBar);
-		adminContent.add(topPanel, BorderLayout.NORTH);
 		
 		//////////////////////////////////////
 		stdsbtn = new JButton("Students");
@@ -187,14 +188,13 @@ public class LoginPage extends JFrame implements ActionListener{
 		gridPanel.add(lecturerbtn);
 		
 		sidePanel.add(gridPanel);
-		adminContent.add(sidePanel, BorderLayout.WEST);
 		
-		centerPanel = new JPanel();
-		centerPanel.setLayout(new BorderLayout(6,6));
-//		centerPanel.setBackground(Color.PINK);
-		centerPanel.setBorder(lineBorder);
-		centerPanel.setOpaque(true);
-		adminContent.add(centerPanel, BorderLayout.CENTER);
+		bodyPanel = new JPanel();
+		bodyPanel.setLayout(new BorderLayout(5,5));
+		
+		bodyPanel.setBackground(Color.PINK);
+		
+		bodyPanel.setBorder(lineBorder);
 		
 		footPanel = new JPanel();
 		footPanel.setBorder(lineBorder);
@@ -204,15 +204,44 @@ public class LoginPage extends JFrame implements ActionListener{
 		JLabel footer = new JLabel("Copyright GroupX 2019");
 		
 		footPanel.add(footer);
-		adminContent.add(footPanel, BorderLayout.SOUTH);
-    }
-    
-    void studentView() {
-    	btnsPanel = new JPanel();
+		
+		/////////////////////////////////////////////////////////////////////////////////////////
+		
+		/////////////////////////////////////////////////////////////////////////////////////////
+		
+		btnsPanel = new JPanel();
 		btnsPanel.setLayout(new FlowLayout(1,70,10));
+		
+		tablePanel = new JPanel();
+		tablePanel.setLayout(new FlowLayout());
+		tablePanel.setBackground(null);
+		
+		table = new JTable() {
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		};
+		dm = (DefaultTableModel) table.getModel();
+		String [] colNames = {"#", "First Name", "Last Name", "Sex", "Course", "Registration #"};
+		dm.setColumnIdentifiers(colNames);
+		table.addMouseListener(this);
+		table.getColumnModel().getColumn(0).setMaxWidth(30);
+		table.getColumnModel().getColumn(5).setMinWidth(120);
+		
+		table.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		table.setPreferredScrollableViewportSize(new Dimension(500,270));
+		JScrollPane scrollPane = new JScrollPane(table);
+		
+		tablePanel.add(scrollPane);
+		
+		
 		addbtn = new JButton("Add");
 		editbtn = new JButton("Edit");
 		delbtn = new JButton("Delete");
+		
+		addbtn.setBorder(BorderFactory.createCompoundBorder(btnOuter, btnInner));
+		editbtn.setBorder(BorderFactory.createCompoundBorder(btnOuter, btnInner));
+		delbtn.setBorder(BorderFactory.createCompoundBorder(btnOuter, btnInner));
 		
 		addbtn.setFocusPainted(false);
 		editbtn.setFocusPainted(false);
@@ -231,20 +260,20 @@ public class LoginPage extends JFrame implements ActionListener{
 		btnsPanel.add(editbtn);
 		btnsPanel.add(delbtn);
 		
-		centerPanel.add(btnsPanel, BorderLayout.NORTH);
+
+		btnsPanel.setVisible(false);
+		tablePanel.setVisible(false);
+		bodyPanel.add(btnsPanel, BorderLayout.NORTH);
+		bodyPanel.add(tablePanel, BorderLayout.CENTER);
+			
+		//////////////////////////////////////////////////////////////////////////////////////////
 		
-		tablePanel = new JPanel();
-//		tablePanel.setLayout();
-		tablePanel.setBackground(Color.LIGHT_GRAY);
+		//////////////////////////////////////////////////////////////////////////////////////////
 		
-		centerPanel.add(tablePanel, BorderLayout.CENTER);
-    }
-    
-    void createForm() {
-    	JPanel formPanel = new JPanel();
+		formPanel = new JPanel();
 		formPanel.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-
+		formPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 		fnLabel = new JLabel("First Name:");
 		lnLabel = new JLabel("Last Name:");
 		courseLabel = new JLabel("Course:");
@@ -263,7 +292,22 @@ public class LoginPage extends JFrame implements ActionListener{
 		dobField.setDate(new Date("1/1/2000"));
 		submitbtn = new JButton("Submit");
 		cancelbtn = new JButton("Cancel");
+		
+		
+		submitbtn.setFocusable(false);
+		cancelbtn.setFocusable(false);
 
+		
+//		Border btnBorder = BorderFactory.createCompoundBorder(outer, inner);
+		
+		submitbtn.setBorder(BorderFactory.createCompoundBorder(btnOuter, btnInner));
+		submitbtn.setForeground(Color.WHITE);
+		submitbtn.setBackground(Color.GREEN);
+		
+		cancelbtn.setBorder(BorderFactory.createCompoundBorder(btnOuter, btnInner));
+		cancelbtn.setForeground(Color.WHITE);
+		cancelbtn.setBackground(Color.RED);
+		
 		submitbtn.addActionListener(this);
 		cancelbtn.addActionListener(this);
 		
@@ -326,16 +370,36 @@ public class LoginPage extends JFrame implements ActionListener{
 		gbc.gridx=2;
 		gbc.gridy=7;
 		formPanel.add(cancelbtn, gbc);
+
+		bodyPanel.add(formPanel, BorderLayout.WEST);
 		
-		centerPanel.add(formPanel);
+		formPanel.setVisible(false);
+		
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		mainContainer.add(topPanel, BorderLayout.NORTH);
+		mainContainer.add(sidePanel, BorderLayout.WEST);
+		mainContainer.add(bodyPanel, BorderLayout.CENTER);
+		mainContainer.add(footPanel, BorderLayout.SOUTH);
+		
+	}
+
+	
+	void addData(String i, String fname, String lname, String sex, String course, String reg) {
+    	
+    	String [] rowData = {i,fname,lname,sex,course,reg};
+    	dm.addRow(rowData);
     }
-    
+	
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getSource() == viewInfo.loginbtn) {
-			String user = viewInfo.getUserField().getText();
-			String password = viewInfo.getPassField().getText();
+		if(e.getSource() == lv.loginbtn) {
+			System.out.println("login");
+			String user = lv.getUserField().getText();
+			String password = lv.getPassField().getText();
 			if(user.equalsIgnoreCase("admin") && password.equals("admin")){
 	            JOptionPane.showMessageDialog(this, "user logged in succesfully", "Welcome", JOptionPane.PLAIN_MESSAGE);
 	            frame.setVisible(false);
@@ -345,37 +409,107 @@ public class LoginPage extends JFrame implements ActionListener{
 	            JOptionPane.showMessageDialog(this, "user name and password does not match what is expected.", "Error", JOptionPane.ERROR_MESSAGE);
 	            
 	        }
-		}else if(e.getSource()==viewInfo.cancelbtn) {
+		}else if(e.getSource()==lv.cancelbtn) {
+			System.out.println("cancel");
 			System.exit(0);
 			
+		}else if(e.getSource()==stdsbtn) {
+			stdsbtn.setBackground(Color.CYAN);
+			stdsbtn.setForeground(Color.WHITE);
+			
+			formPanel.setVisible(false);
+			tablePanel.setVisible(true);
+			btnsPanel.setVisible(true);
+			
+//			mainContainer.revalidate();
+			
+		}else if(e.getSource()==addbtn || e.getSource()==addStd) {
+			tablePanel.setVisible(false);
+			btnsPanel.setVisible(false);
+			formPanel.setVisible(true);
+			
+//			mainContainer.revalidate();
+			
 		}else if(e.getSource()==logout) {
-			window2.dispose();
+			frame2.dispose();
 			frame.setVisible(true);
+			lv.getPassField().setText("");
 			
-		}else if(e.getSource() == stdsbtn) {
-			System.out.println("Student button");
-			centerPanel.removeAll();
-			studentView();
-			centerPanel.updateUI();
+		}else if(e.getSource()==submitbtn) {
 			
-		}else if(e.getSource() == addbtn || e.getSource() == addStd) {
-			centerPanel.removeAll();
-			createForm();
-			centerPanel.updateUI();
+			System.out.println("Submit Button");
+			String fname = fnField.getText();
+	    	String lname = lnField.getText();
+	    	String 	sex = (String) sexField.getSelectedItem();
+	    	String course = courseField.getText();
+	    	String reg = regField.getText();
+	    	
+	    	
+			addData(a.toString(),fname,lname,sex,course,reg);
 			
-		}else if(e.getSource() == submitbtn) {
-			
-			
+			fnField.setText("");
+	    	lnField.setText("");
+	    	courseField.setText("");
+	    	regField.setText("");
+	    	a++;
+	    	
 		}else if(e.getSource() == cancelbtn) {
 			
+			fnField.setText("");
+	    	lnField.setText("");
+	    	courseField.setText("");
+	    	regField.setText("");
+	    	
+	    	formPanel.setVisible(false);
+			tablePanel.setVisible(true);
+			btnsPanel.setVisible(true);
 			
 		}else if(e.getSource() == editbtn) {
+			tablePanel.setVisible(false);
+			btnsPanel.setVisible(false);
+			formPanel.setVisible(true);
 			
 			
 		}else if(e.getSource() == delbtn) {
-			
+			dm.removeRow(table.getSelectedRow());
 			
 		}
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		fnField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+		lnField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+		sexField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
+		courseField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+		regField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
        
 }
