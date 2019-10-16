@@ -39,7 +39,6 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
-
 public class LoginPage extends JFrame implements ActionListener,MouseListener {
 	JFrame frame, frame2;
 	JPanel mainContainer,topPanel,sidePanel,gridPanel,bodyPanel,footPanel,formPanel,btnsPanel,tablePanel,stdPanel;
@@ -56,9 +55,11 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 	
 	JButton addbtn, editbtn, delbtn;
 	//////////////////////////////
-	
+
 	JLabel fnLabel,lnLabel,sexLabel, dobLabel,courseLabel,regLabel;
+	JLabel fnLabel2,lnLabel2,sexLabel2, courseLabel2,regLabel2;
 	JTextField fnField, lnField,courseField,regField;
+	
 	JDateChooser dobField;
 	JComboBox sexField;
 	JButton submitbtn, cancelbtn;
@@ -68,9 +69,14 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 	////////////////////////////////////////////////////////////////////////
 	JTable table;
 	DefaultTableModel dm;
-	Integer a=0;
-	String [][] stdData = new String [10][10];
+	Integer a=1;
+//	String [][] stdData = new String [10][10];
 	
+	JPanel updateForm;
+	JTextField fnField2, lnField2,courseField2,regField2;
+	
+	JComboBox sexField2;
+	JButton updatebtn, upcancelbtn;
 	
 	public LoginPage(){
 		frame = new JFrame("IUEA Login");
@@ -163,7 +169,7 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 		sidePanel = new JPanel();
 		sidePanel.setBorder(lineBorder);
 		sidePanel.setLayout(new FlowLayout(4,0,0));
-		sidePanel.setBackground(Color.CYAN);
+//		sidePanel.setBackground(Color.CYAN);
 		
 		gridPanel = new JPanel();
 		gridPanel.setLayout(new GridLayout(4,1,0,0));
@@ -374,6 +380,95 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 		bodyPanel.add(formPanel, BorderLayout.WEST);
 		
 		formPanel.setVisible(false);
+
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		//////////////////////////////////////////////////////////////////////////////////////////
+		
+		updateForm = new JPanel();
+		updateForm.setLayout(new GridBagLayout());
+		GridBagConstraints gb = new GridBagConstraints();
+		formPanel.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
+		fnLabel2 = new JLabel("First Name:");
+		lnLabel2 = new JLabel("Last Name:");
+		courseLabel2 = new JLabel("Course:");
+		regLabel2 = new JLabel("Registration:");
+		sexLabel2 = new JLabel("Sex:");
+		
+		fnField2 = new JTextField(15);
+		lnField2 = new JTextField(15);
+		courseField2 = new JTextField(15);
+		regField2 = new JTextField(15);
+//		regField.setText();
+		sexField2 = new JComboBox(stdSex);
+		updatebtn = new JButton("Update");
+
+		updatebtn.setFocusable(false);
+//		Border btnBorder = BorderFactory.createCompoundBorder(outer, inner);
+		
+		updatebtn.setBorder(BorderFactory.createCompoundBorder(btnOuter, btnInner));
+		updatebtn.setForeground(Color.WHITE);
+		updatebtn.setBackground(Color.GREEN);
+		
+		upcancelbtn = new JButton("Cancel");
+		upcancelbtn.setBorder(BorderFactory.createCompoundBorder(btnOuter, btnInner));
+		upcancelbtn.setForeground(Color.WHITE);
+		upcancelbtn.setBackground(Color.RED);
+		
+		updatebtn.addActionListener(this);
+		
+		gb.insets=space;
+		gb.gridx=1;
+		gb.gridy=1;
+		updateForm.add(fnLabel2, gb);
+		
+		gb.gridx=2;
+		gb.gridy=1;
+		updateForm.add(fnField2, gb);
+		
+		gb.gridx=1;
+		gb.gridy=2;
+		updateForm.add(lnLabel2, gb);
+		
+		gb.gridx=2;
+		gb.gridy=2;
+		updateForm.add(lnField2, gb);
+		
+		gb.gridx=1;
+		gb.gridy=3;
+		updateForm.add(sexLabel2, gb);
+
+		gb.fill=GridBagConstraints.HORIZONTAL;    		
+		gb.gridx=2;
+		gb.gridy=3;
+		updateForm.add(sexField2, gb);
+
+		gb.fill=GridBagConstraints.NONE;
+		gb.gridx=1;
+		gb.gridy=4;
+		updateForm.add(courseLabel2, gb);
+		
+		gb.gridx=2;
+		gb.gridy=4;
+		updateForm.add(courseField2, gb);
+		
+		gb.gridx=1;
+		gb.gridy=5;
+		updateForm.add(regLabel2, gb);
+		
+		gb.gridx=2;
+		gb.gridy=5;
+		updateForm.add(regField2, gb);
+		
+		gb.gridx=1;
+		gb.gridy=6;
+		updateForm.add(updatebtn, gb);
+		
+		gb.gridx=2;
+		gb.gridy=6;
+		updateForm.add(upcancelbtn, gb);
+		
+		updateForm.setVisible(false);
 		
 		//////////////////////////////////////////////////////////////////////////////////////////
 		
@@ -416,17 +511,22 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 		}else if(e.getSource()==stdsbtn) {
 			stdsbtn.setBackground(Color.CYAN);
 			stdsbtn.setForeground(Color.WHITE);
+			bodyPanel.add(tablePanel, BorderLayout.CENTER);
 			
 			formPanel.setVisible(false);
 			tablePanel.setVisible(true);
 			btnsPanel.setVisible(true);
+			updateForm.setVisible(false);
 			
 //			mainContainer.revalidate();
 			
 		}else if(e.getSource()==addbtn || e.getSource()==addStd) {
+			bodyPanel.add(formPanel, BorderLayout.CENTER);
 			tablePanel.setVisible(false);
 			btnsPanel.setVisible(false);
+			updateForm.setVisible(false);
 			formPanel.setVisible(true);
+			
 			
 //			mainContainer.revalidate();
 			
@@ -465,13 +565,32 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 			btnsPanel.setVisible(true);
 			
 		}else if(e.getSource() == editbtn) {
+//			tablePanel.setVisible(false);
+//			btnsPanel.setVisible(false);
+//			formPanel.setVisible(true);
+
+			bodyPanel.add(updateForm, BorderLayout.CENTER);
+			formPanel.setVisible(false);
 			tablePanel.setVisible(false);
 			btnsPanel.setVisible(false);
-			formPanel.setVisible(true);
-			
+			updateForm.setVisible(true);
+
+			fnField2.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
+			lnField2.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
+			sexField2.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
+			courseField2.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
+			regField2.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
 			
 		}else if(e.getSource() == delbtn) {
 			dm.removeRow(table.getSelectedRow());
+			
+		}else if(e.getSource()==updatebtn) {
+
+			dm.setValueAt(fnField2.getText(), table.getSelectedRow(), 1);
+			dm.setValueAt(lnField2.getText(), table.getSelectedRow(), 2);
+			dm.setValueAt(sexField2.getSelectedItem(), table.getSelectedRow(), 3);
+			dm.setValueAt(courseField2.getText(), table.getSelectedRow(), 4);
+			dm.setValueAt(regField2.getText(), table.getSelectedRow(), 5);
 			
 		}
 	}
@@ -479,11 +598,6 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		fnField.setText(table.getValueAt(table.getSelectedRow(), 1).toString());
-		lnField.setText(table.getValueAt(table.getSelectedRow(), 2).toString());
-		sexField.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
-		courseField.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
-		regField.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
 		
 	}
 
