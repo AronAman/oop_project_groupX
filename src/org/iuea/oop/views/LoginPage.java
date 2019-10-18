@@ -39,7 +39,7 @@ import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 
-public class LoginPage extends JFrame implements ActionListener,MouseListener {
+public class LoginPage extends JFrame implements ActionListener {
 	JFrame frame, frame2;
 	JPanel mainContainer,topPanel,sidePanel,gridPanel,bodyPanel,footPanel,formPanel,btnsPanel,tablePanel,stdPanel;
 	Dimension frameSize = new Dimension(350, 360);
@@ -230,7 +230,8 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 		dm = (DefaultTableModel) table.getModel();
 		String [] colNames = {"#", "First Name", "Last Name", "Sex", "Course", "Registration #"};
 		dm.setColumnIdentifiers(colNames);
-		table.addMouseListener(this);
+//		table.addMouseListener(this);
+		
 		table.getColumnModel().getColumn(0).setMaxWidth(30);
 		table.getColumnModel().getColumn(5).setMinWidth(120);
 		
@@ -553,7 +554,7 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 	    	regField.setText("");
 	    	a++;
 	    	
-		}else if(e.getSource() == cancelbtn) {
+		}else if(e.getSource() == cancelbtn || e.getSource() == upcancelbtn) {
 			
 			fnField.setText("");
 	    	lnField.setText("");
@@ -565,10 +566,15 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 			btnsPanel.setVisible(true);
 			
 		}else if(e.getSource() == editbtn) {
+			System.out.println(table.getSelectedRow());
 //			tablePanel.setVisible(false);
 //			btnsPanel.setVisible(false);
 //			formPanel.setVisible(true);
-
+			if(table.getSelectedRow()<0) {
+				String error = "Select a row to edit";
+				JOptionPane.showMessageDialog(this, error, "Edit", JOptionPane.PLAIN_MESSAGE);
+			}
+			else {
 			bodyPanel.add(updateForm, BorderLayout.CENTER);
 			formPanel.setVisible(false);
 			tablePanel.setVisible(false);
@@ -580,9 +586,14 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 			sexField2.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
 			courseField2.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 			regField2.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
-			
+			} 
 		}else if(e.getSource() == delbtn) {
-			dm.removeRow(table.getSelectedRow());
+			if(table.getSelectedRow()<0) {
+				String error = "Select a row to delete";
+				JOptionPane.showMessageDialog(this, error, "Edit", JOptionPane.PLAIN_MESSAGE);
+			}else{
+				dm.removeRow(table.getSelectedRow());
+			}
 			
 		}else if(e.getSource()==updatebtn) {
 
@@ -595,35 +606,5 @@ public class LoginPage extends JFrame implements ActionListener,MouseListener {
 		}
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-	
        
 }
