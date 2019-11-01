@@ -554,6 +554,13 @@ public class LoginPage extends JFrame implements ActionListener {
 	    	regField.setText("");
 	    	a++;
 	    	
+bodyPanel.add(tablePanel, BorderLayout.CENTER);
+			
+			formPanel.setVisible(false);
+			tablePanel.setVisible(true);
+			btnsPanel.setVisible(true);
+			updateForm.setVisible(false);
+	    	
 		}else if(e.getSource() == cancelbtn || e.getSource() == upcancelbtn) {
 			
 			fnField.setText("");
@@ -586,6 +593,8 @@ public class LoginPage extends JFrame implements ActionListener {
 			sexField2.setSelectedItem(table.getValueAt(table.getSelectedRow(), 3));
 			courseField2.setText(table.getValueAt(table.getSelectedRow(), 4).toString());
 			regField2.setText(table.getValueAt(table.getSelectedRow(), 5).toString());
+			
+			
 			} 
 		}else if(e.getSource() == delbtn) {
 			if(table.getSelectedRow()<0) {
@@ -602,6 +611,13 @@ public class LoginPage extends JFrame implements ActionListener {
 			dm.setValueAt(sexField2.getSelectedItem(), table.getSelectedRow(), 3);
 			dm.setValueAt(courseField2.getText(), table.getSelectedRow(), 4);
 			dm.setValueAt(regField2.getText(), table.getSelectedRow(), 5);
+			
+			bodyPanel.add(tablePanel, BorderLayout.CENTER);
+			
+			formPanel.setVisible(false);
+			tablePanel.setVisible(true);
+			btnsPanel.setVisible(true);
+			updateForm.setVisible(false);
 			
 		}
 	}
